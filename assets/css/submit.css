@@ -1,0 +1,104 @@
+main {
+    flex: 1;
+    padding: 2em;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.assignment-detail {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 70%;
+}
+
+.assignment-detail h2 {
+    display: flex;
+    align-items: center;
+    margin: 0 0 1em 0;
+}
+
+.assignment-detail h2 i {
+    margin-right: 0.5em;
+}
+
+.assignment-detail hr {
+    margin: 1em 0;
+}
+
+.assignment-file {
+    display: flex;
+    align-items: center;
+    margin: 1em 0;
+}
+
+.assignment-file i {
+    margin-right: 0.5em;
+}
+
+.comments-section {
+    margin-top: 2em;
+}
+
+.comments-section h3 {
+    margin: 0 0 0.5em 0;
+}
+
+.submission-box {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.submission-box h3 {
+    margin: 0 0 1em 0;
+}
+
+.btn-add-create, .btn-resubmit {
+    width: 100%;
+    padding: 1em;
+    margin: 0.5em 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-add-create {
+    background-color: #f1f1f1;
+    color: #4285f4;
+}
+
+.btn-resubmit {
+    background-color: #4285f4;
+    color: white;
+}
+
+.btn-add-create:hover {
+    background-color: #ddd;
+}
+
+.btn-resubmit:hover {
+    background-color: #357ae8;
+}
+
+.private-comments {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.private-comments h3 {
+    margin: 0 0 0.5em 0;
+}
+
+.private-comments a {
+    color: #4285f4;
+    text-decoration: none;
+}
