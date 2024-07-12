@@ -174,6 +174,7 @@ if (isset($_POST["asgn_accept"])) {
 
 if (isset($_POST['give_grade']) && $_POST['give_grade'] == 1) {
 
+    $class_code = $_POST['classCode'];
     $class_id = class_id($class_code);
     $asgnId = $_POST['asgn_id'];
     $stuId = $_POST['stu_id'];
