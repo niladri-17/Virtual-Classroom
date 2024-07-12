@@ -9,7 +9,7 @@
 
 - Navigate to `http://localhost/phpmyadmin/`.
 - Create a database named `classroom`.
-- Create the database tables by running the sql code in the `classroom.sql` file.
+- Create the database tables by running the sql code in the `classroom.example.sql` file.
 
 ### 3. Google OAuth Setup
 
