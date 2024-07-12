@@ -11,20 +11,7 @@
 - Create a database named `classroom`.
 - Create the database tables by running the sql code in the `classroom.sql` file.
 
-### 3. Environment Variables:
-
-```sh
-APP_URL=http://localhost/classroom/
-DB_HOST=localhost
-DB_NAME=classroom
-DB_USER=root
-DB_PASS=''
-CLIENT_ID=''
-CLIENT_SECRET=''
-REDIRECT_URI=''
-```
-
-### 4. Google OAuth Setup
+### 3. Google OAuth Setup
 
 1. **Go to Google Developer Console:**
 
@@ -54,7 +41,23 @@ REDIRECT_URI=''
    - Copy and store these credentials securely.
 
 5. **Set REDIRECT_URI:**
+
    - Set **REDIRECT_URI** to your app's OAuth callback URL.
+
+### 4. Environment Variables:
+
+- create a `.env` file in the root directory and add all the environmental variable as shown in the `.example.env` file.
+
+```sh
+APP_URL=http://localhost/classroom/
+DB_HOST=localhost
+DB_NAME=classroom
+DB_USER=root
+DB_PASS=''
+CLIENT_ID=''
+CLIENT_SECRET=''
+REDIRECT_URI=''
+```
 
 ![alt text](https://github.com/niladri-17/Virtual-Classroom/blob/main/readme-images/vc-index.png?raw=true)
 
