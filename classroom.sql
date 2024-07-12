@@ -36,14 +36,6 @@ CREATE TABLE `announcements` (
   `an_updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `announcements`
---
-
-INSERT INTO `announcements` (`an_id`, `an_class_id`, `an_user_id`, `an_text`, `an_created_at`, `an_updated_at`) VALUES
-(1, 1, 1, '<p>#include &lt;stdio.h&gt;</p><p>int main() {</p><p>   // printf() displays the string inside quotation</p><p>   printf(&quot;Hello, World!&quot;);</p><p>   return 0;</p><p>}</p><p></p>', '2024-06-19 20:19:26', '2024-06-20 18:07:29'),
-(2, 1, 1, '<p>dummy announcement 1</p>', '2024-06-20 18:56:36', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -79,13 +71,6 @@ CREATE TABLE `classes` (
   `class_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `classes`
---
-
-INSERT INTO `classes` (`class_id`, `class_name`, `class_section`, `class_subject`, `class_code`, `class_teacher_id`, `class_created_at`) VALUES
-(1, 'Data Structures', 'BCS 3A', 'Computer Science', 'excotq', 1, '2024-06-19 19:27:46');
-
 -- --------------------------------------------------------
 
 --
@@ -98,13 +83,6 @@ CREATE TABLE `enrollments` (
   `enrollment_class_id` int(10) NOT NULL,
   `enrolled_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `enrollments`
---
-
-INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `enrollment_class_id`, `enrolled_at`) VALUES
-(1, 2, 1, '2024-07-12 11:48:25');
 
 -- --------------------------------------------------------
 
@@ -171,14 +149,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_created_at`, `user_updated_at`, `user_image_url`, `user_token`) VALUES
-(1, '1052 Niladri Basak', 'nilaronaldo007@gmail.com', '', '2024-06-16 02:59:34', NULL, 'https://lh3.googleusercontent.com/a/ACg8ocKbi-FQonx-bxnZ-LFDo6Ms-1Raafc8REl8Ev8K-UxLcHCCrnFP=s96-c', '117905127042921495538'),
-(2, 'test1', 'test1@test.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-07-12 11:47:59', NULL, NULL, '');
-
---
 -- Indexes for dumped tables
 --
 
@@ -238,49 +208,49 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `an_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `an_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `asgn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `asgn_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `class_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `class_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
 --
 ALTER TABLE `enrollments`
-  MODIFY `enrollment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `enrollment_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `grade_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `material_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `material_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `submissions`
 --
 ALTER TABLE `submissions`
-  MODIFY `sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `sub_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
