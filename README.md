@@ -9,6 +9,7 @@
 
 - Navigate to `http://localhost/phpmyadmin/`.
 - Create a database named `classroom`.
+- Create the database tables by running the sql code in the `classroom.sql` file.
 
 ### 3. Environment Variables:
 
@@ -23,7 +24,7 @@ CLIENT_SECRET=''
 REDIRECT_URI=''
 ```
 
-### Google OAuth Setup
+### 4. Google OAuth Setup
 
 1. **Go to Google Developer Console:**
 
