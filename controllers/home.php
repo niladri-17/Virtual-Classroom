@@ -19,15 +19,16 @@ if (isset($_POST['show_all_class'])) {
     }
 
     $sql = "
-        SELECT * 
+        SELECT DISTINCT classes.*
         FROM classes 
         LEFT JOIN enrollments ON classes.class_id = enrollments.enrollment_class_id
         WHERE 
             classes.class_teacher_id = '{$_SESSION['user_id']}'
             OR 
             enrollments.student_id = '{$_SESSION['user_id']}'
-        ORDER BY class_id DESC
+        ORDER BY classes.class_id DESC
     ";
+
     $result = mysqli_query($connection, $sql);
 
     if (mysqli_num_rows($result) > 0) {
@@ -48,8 +49,10 @@ if (isset($_POST['show_all_class'])) {
                 }
             }
 
+            $class_id = md5($row['class_code']);
+
             $html .= "
-                <div data-id='{$row['class_id']}' data-code='{$row['class_code']}' class='card'>
+                <div data-id='$class_id' data-code='{$row['class_code']}' class='card'>
                     <span id='show-more' class='show-more'>&#8942;</span>
                     <div id='class-actions' class='class-actions'>
                         <a class='viewCode'>View Code</a>
@@ -158,7 +161,8 @@ if (isset($_POST['delete_class'])) {
 
     $html = "";
 
-    $class_id = filter_var($_POST['classId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $class_code = filter_var($_POST['classId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $class_id = class_id($class_code);
     $user_id = $_SESSION['user_id'];
 
     if ($class_id && $user_id) {
@@ -167,25 +171,23 @@ if (isset($_POST['delete_class'])) {
         $check_teacher_sql = "SELECT class_teacher_id FROM classes WHERE class_id = '$class_id'";
         $check_teacher_result = mysqli_query($connection, $check_teacher_sql);
 
-        $is_teacher = false;
-        $is_student = false;
+        $is_teacher = false; // therefore student
 
         $class = mysqli_fetch_assoc($check_teacher_result);
         if ($class && $class['class_teacher_id'] == $user_id) {
-            $is_teacher = true;
-        } else {
-            // Check if the current user is a student in the class
-            // $check_student_sql = "SELECT student_id FROM enrollments WHERE class_id = '$class_id' AND student_id = '$user_id'";
-            // $check_student_result = mysqli_query($connection, $check_student_sql);
-            // if (!$check_student_result) {
-            //     throw new Exception("Error checking class student: " . mysqli_error($connection));
-            // }
-            // if (mysqli_num_rows($check_student_result) > 0) {
-            $is_student = true;
-            // }
+            $is_teacher = true; // therefore teacher
         }
 
         if ($is_teacher) {
+
+            // Delete from announcements table
+            $delete_announcements_sql = "DELETE FROM announcements WHERE an_class_id = '$class_id' AND an_user_id = '$user_id'";
+            $delete_announcements_result = mysqli_query($connection, $delete_announcements_sql);
+
+            // Delete from assignments table
+            $delete_assignments_sql = "DELETE FROM assignments WHERE asgn_class_id = '$class_id'";
+            $delete_assignments_result = mysqli_query($connection, $delete_assignments_sql);
+
             // Delete from enrollments table
             $delete_enrollments_sql = "DELETE FROM enrollments WHERE enrollment_class_id = '$class_id'";
             $delete_enrollments_result = mysqli_query($connection, $delete_enrollments_sql);
@@ -194,20 +196,79 @@ if (isset($_POST['delete_class'])) {
             $delete_class_sql = "DELETE FROM classes WHERE class_id = '$class_id'";
             $delete_class_result = mysqli_query($connection, $delete_class_sql);
 
-            echo "Class and related enrollments deleted successfully.";
+            // Delete from grades table
+            $delete_grades_sql = "DELETE FROM grades WHERE grade_class_id = '$class_id'";
+            $delete_grades_result = mysqli_query($connection, $delete_grades_sql);
+
+            // Delete from materials table
+            $delete_sub_sql = "DELETE FROM materials WHERE material_class_id = '$class_id'";
+            $delete_sub_result = mysqli_query($connection, $delete_sub_sql);
+
+            // Delete submitted files
+            $image_query = "SELECT material_file FROM materials WHERE material_class_id = '$class_id'";
+            $image_result = mysqli_query($connection, $image_query);
+            if (mysqli_num_rows($image_result) > 0) {
+                while ($image = mysqli_fetch_assoc($image_result)) {
+                    unlink('../storage/files/' . $image['material_file']);
+                }
+            }
+
+            // Delete from submissions table
+            $delete_sub_sql = "DELETE FROM submissions WHERE sub_class_id = '$class_id'";
+            $delete_sub_result = mysqli_query($connection, $delete_sub_sql);
+
+            // Delete submitted files
+            $image_query2 = "SELECT sub_file FROM submissions WHERE sub_class_id = '$class_id' AND sub_student_id = '$user_id'";
+            $image_result2 = mysqli_query($connection, $image_query2);
+            if (mysqli_num_rows($image_result2) > 0) {
+                while ($image = mysqli_fetch_assoc($image_result2)) {
+                    unlink('../storage/files/' . $image['material_file']);
+                }
+            }
+
+            $html .= "Class and related enrollments deleted successfully.";
         } else {
 
             // Delete from enrollments table
             $delete_enrollments_sql = "DELETE FROM enrollments WHERE enrollment_class_id = '$class_id' AND student_id = '$user_id'";
             $delete_enrollments_result = mysqli_query($connection, $delete_enrollments_sql);
 
+            // Delete from grades table
+            $delete_grades_sql = "DELETE FROM grades WHERE grade_class_id = '$class_id' AND grade_student_id = '$user_id'";
+            $delete_grades_result = mysqli_query($connection, $delete_grades_sql);
+
+            // Delete from submissions table
+            $delete_sub_sql = "DELETE FROM submissions WHERE sub_class_id = '$class_id' AND sub_student_id = '$user_id'";
+            $delete_sub_result = mysqli_query($connection, $delete_sub_sql);
+
+            // Delete submitted files
+            $image_query1 = "SELECT sub_file FROM submissions WHERE sub_class_id = '$class_id' AND sub_student_id = '$user_id'";
+            $image_result1 = mysqli_query($connection, $image_query1);
+            if (mysqli_num_rows($image_result1) > 0) {
+                while ($image = mysqli_fetch_assoc($image_result1)) {
+                    unlink('../storage/files/' . $image['material_file']);
+                }
+            }
+
+            // Delete from announcements table
+            $delete_announcements_sql = "DELETE FROM announcements WHERE an_class_id = '$class_id' AND an_user_id = '$user_id'";
+            $delete_announcements_result = mysqli_query($connection, $delete_announcements_sql);
+
+            $image_query2 = "SELECT material_file FROM materials WHERE material_class_id = '$class_id' AND material_user_id = '$user_id'";
+            $image_result2 = mysqli_query($connection, $image_query2);
+            if (mysqli_num_rows($image_result2) > 0) {
+                while ($image = mysqli_fetch_assoc($image_result2)) {
+                    unlink('../storage/files/' . $image['material_file']);
+                }
+            }
+
             // Delete from classes table -- user cant because student
 
-            echo "You are a student in this class, and only the teacher can delete it.";
+            $html .= "Unenrolled successfully";
         }
 
     } else {
-        echo "No class_id provided or user not logged in.";
+        $html .= "No class_id provided or user not logged in.";
     }
 
     $res = [

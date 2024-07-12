@@ -103,10 +103,10 @@ else
         <header>
             <div class="header-left">
                 <i id="hamburger" class="fas fa-bars icon" title="Menu"></i>
-                <h1><a href="home.php">Virtual Classroom</a></h1>
+                <h1><a href="home">Virtual Classroom</a></h1>
             </div>
             <div class="header-right">
-                <i class="fas fa-magnifying-glass icon" title="Search"></i>
+                <!-- <i class="fas fa-magnifying-glass icon" title="Search"></i> -->
                 <div class="dropdown">
                     <i id="plusIcon" class="fas fa-plus icon" title="Create or Join Class"></i>
                     <div id="dropdownContent" class="dropdown-content">
@@ -226,15 +226,19 @@ else
         console.log('Data ID:', dataId);
         $.ajax({
             type: "POST",
-            url: "controllers/home.php",
+            url: "controllers/home",
             data: {
                 delete_class: 1,
                 classId: dataId
             },
             success: function (response) {
-                show_all_class();
-                fetchTeachingClasses();
-                fetchEnrolledClasses();
+                const res = jQuery.parseJSON(response);
+                if (res.delete == 1) {
+                    show_all_class();
+                    fetchTeachingClasses();
+                    fetchEnrolledClasses();
+                    notifier.success(res.message)
+                }
             }
         });
     }
@@ -242,7 +246,7 @@ else
     function show_all_class() {
         $.ajax({
             type: "POST",
-            url: "controllers/home.php",
+            url: "controllers/home",
             data: {
                 show_all_class: 1,
             },
@@ -284,7 +288,7 @@ else
 
         $.ajax({
             type: "POST",
-            url: "controllers/home.php",
+            url: "controllers/home",
             data: {
                 create_class: 1,
                 className: className,
@@ -313,7 +317,7 @@ else
 
         $.ajax({
             type: "POST",
-            url: "controllers/home.php",
+            url: "controllers/home",
             data: {
                 join_class: 1,
                 classCode: classCode

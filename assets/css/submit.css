@@ -1,104 +1,321 @@
 main {
-    flex: 1;
-    padding: 2em;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: space-evenly;
+  flex: 1;
+  padding: 1rem 0rem;
+
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .assignment-detail {
-    background-color: #fff;
-    padding: 2em;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 70%;
+  background-color: var(--class-bg);
+  padding: 2em;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 70%;
 }
 
 .assignment-detail h2 {
-    display: flex;
-    align-items: center;
-    margin: 0 0 1em 0;
+  display: flex;
+  align-items: center;
 }
 
 .assignment-detail h2 i {
-    margin-right: 0.5em;
+  margin-right: 0.5rem;
 }
 
 .assignment-detail hr {
-    margin: 1em 0;
+  margin: 1rem 0;
+}
+
+.asgn_desc {
+  line-height: 1.35rem;
+}
+
+.asgn_desc li {
+  margin-left: 1.5rem;
 }
 
 .assignment-file {
-    display: flex;
-    align-items: center;
-    margin: 1em 0;
+  margin: 1em 0;
 }
 
 .assignment-file i {
-    margin-right: 0.5em;
+  margin-right: 0.5em;
 }
 
-.comments-section {
-    margin-top: 2em;
+.comments-section,
+.submissions-section {
+  margin-top: 2em;
 }
 
-.comments-section h3 {
-    margin: 0 0 0.5em 0;
+.comments-section h3,
+.submissions-section h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.right-sidebar {
+  background-color: var(--class-bg);
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sub_box_heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-sidebar h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.right-sidebar form {
+  display: block;
+  width: 100%;
 }
 
 .submission-box {
-    background-color: #fff;
-    padding: 2em;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
 }
 
-.submission-box h3 {
-    margin: 0 0 1em 0;
+#fileCount1 {
+  margin-top: 1rem;
+  margin-left: 0;
+  text-align: end;
 }
 
-.btn-add-create, .btn-resubmit {
-    width: 100%;
-    padding: 1em;
-    margin: 0.5em 0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.btn-add-create,
+.btn-submit {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .btn-add-create {
-    background-color: #f1f1f1;
-    color: #4285f4;
+  background-color: #f1f1f1;
+  color: #4285f4;
 }
 
-.btn-resubmit {
-    background-color: #4285f4;
-    color: white;
+.btn-submit {
+  background-color: #4285f4;
+  color: white;
 }
 
 .btn-add-create:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
-.btn-resubmit:hover {
-    background-color: #357ae8;
+.btn-submit:hover {
+  background-color: #357ae8;
 }
 
 .private-comments {
-    margin-top: 2em;
-    text-align: center;
+  margin-top: 2rem;
+  text-align: center;
 }
 
 .private-comments h3 {
-    margin: 0 0 0.5em 0;
+  margin: 0 0 0.5em 0;
 }
 
 .private-comments a {
-    color: #4285f4;
-    text-decoration: none;
+  color: #4285f4;
+  text-decoration: none;
+}
+
+.sub_info {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sub_info_header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 2rem;
+}
+
+.count {
+  text-align: center;
+}
+
+.number {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.v-div {
+  transform: rotate("90deg");
+}
+
+.sub_info_footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  display: none;
+}
+
+.toggle-hider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 90;
+}
+
+.label {
+  position: relative;
+  width: 40px;
+  height: 1rem;
+  background: #105dd958;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.label::before {
+  font-size: 1rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 21px;
+  height: 21px;
+  background: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.label.plus::before {
+  content: "✓";
+  right: 0;
+  background-color: #105dd9;
+}
+
+.label.inactive {
+  background-color: #a9a9a9 !important;
+}
+
+.label.inactive::before {
+  background-color: #5e5e5e !important;
+}
+
+.toggle:checked + .label {
+  background: #0000003e;
+}
+
+.label.minus::before {
+  content: "−";
+  right: unset;
+  left: 0;
+  background-color: #ff0000;
+}
+
+.label.minus{
+  background: #73383849;
+}
+
+.text {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.sub-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sub-list-items {
+  min-width: 15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  border: 2px solid rgb(154, 154, 154);
+  border-radius: 5px;
+  flex: 1;
+}
+
+.sub-list-items a {
+  display: block;
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.h-div {
+  height: 1px;
+  background: #2e2e2e;
+}
+
+.sub-header-1 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sub-header-2{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.sub-header-1 img {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  background-color: rgba(32, 32, 32, 0.623);
+  margin-bottom: .5rem;
+}
+
+.give-grade-form {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+
+.give-grade-form input{
+  width: 5rem;
+}
+
+.give-grade-form button{
+  width: max-content;
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 07:01 PM
+-- Generation Time: Jul 12, 2024 at 12:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,14 +41,8 @@ CREATE TABLE `announcements` (
 --
 
 INSERT INTO `announcements` (`an_id`, `an_class_id`, `an_user_id`, `an_text`, `an_created_at`, `an_updated_at`) VALUES
-(33, 12, 3, '<p>hello</p>', '2024-06-19 10:29:37', NULL),
-(34, 12, 3, '<ul><li>wefwefe</li></ul><ol><li>efwfwef</li><li>fefewf</li></ol>', '2024-06-19 10:30:19', NULL),
-(36, 12, 5, '<p>hi</p>', '2024-06-19 14:12:21', NULL),
-(38, 12, 5, '<p>google pic</p>', '2024-06-19 14:15:36', NULL),
-(41, 34, 3, '<p>chhapdo</p>', '2024-06-19 17:41:27', NULL),
-(42, 39, 3, '<p>#include &lt;stdio.h&gt;</p><p>int main() {</p><p>   // printf() displays the string inside quotation</p><p>   printf(&quot;Hello, World!&quot;);</p><p>   return 0;</p><p>}</p><p></p>', '2024-06-19 20:19:26', '2024-06-20 18:07:29'),
-(63, 39, 3, '<p>dummy announcement 1</p>', '2024-06-20 18:56:36', NULL),
-(64, 39, 12, '<p>dummy announcement 2</p>', '2024-06-20 18:58:03', NULL);
+(1, 1, 1, '<p>#include &lt;stdio.h&gt;</p><p>int main() {</p><p>   // printf() displays the string inside quotation</p><p>   printf(&quot;Hello, World!&quot;);</p><p>   return 0;</p><p>}</p><p></p>', '2024-06-19 20:19:26', '2024-06-20 18:07:29'),
+(2, 1, 1, '<p>dummy announcement 1</p>', '2024-06-20 18:56:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -59,10 +53,14 @@ INSERT INTO `announcements` (`an_id`, `an_class_id`, `an_user_id`, `an_text`, `a
 CREATE TABLE `assignments` (
   `asgn_id` int(10) NOT NULL,
   `asgn_class_id` int(10) NOT NULL,
+  `asgn_teacher_id` int(10) NOT NULL,
   `asgn_title` varchar(255) NOT NULL,
   `asgn_description` text NOT NULL,
-  `asgn_due_date` date NOT NULL,
-  `asgn_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `asgn_points` varchar(50) NOT NULL,
+  `asgn_due_date` varchar(50) NOT NULL,
+  `asgn_accept_status` tinyint(4) NOT NULL DEFAULT 1,
+  `asgn_created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `asgn_edited_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,9 +84,7 @@ CREATE TABLE `classes` (
 --
 
 INSERT INTO `classes` (`class_id`, `class_name`, `class_section`, `class_subject`, `class_code`, `class_teacher_id`, `class_created_at`) VALUES
-(39, 'Data Structures', 'BCS 3A', 'Computer Science', 'excotq', 3, '2024-06-19 19:27:46'),
-(40, 'DAA', 'BCS 3A', 'Computer Science', 'lq793o', 3, '2024-06-19 19:27:57'),
-(41, 'DAA', 'BCS 3B', 'Computer Science', 'j6bbs4', 12, '2024-06-19 19:28:33');
+(1, 'Data Structures', 'BCS 3A', 'Computer Science', 'excotq', 1, '2024-06-19 19:27:46');
 
 -- --------------------------------------------------------
 
@@ -108,8 +104,23 @@ CREATE TABLE `enrollments` (
 --
 
 INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `enrollment_class_id`, `enrolled_at`) VALUES
-(6, 12, 40, '2024-06-19 19:28:18'),
-(9, 12, 39, '2024-06-20 12:28:46');
+(1, 2, 1, '2024-07-12 11:48:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grades`
+--
+
+CREATE TABLE `grades` (
+  `grade_id` int(10) NOT NULL,
+  `grade_class_id` int(10) NOT NULL,
+  `grade_asgn_id` int(10) NOT NULL,
+  `grade_student_id` int(10) NOT NULL,
+  `grade_value` varchar(20) NOT NULL,
+  `grade_created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `grade_edited_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -120,21 +131,27 @@ INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `enrollment_class_id`,
 CREATE TABLE `materials` (
   `material_id` int(10) NOT NULL,
   `material_class_id` int(10) NOT NULL,
-  `material_an_id` int(10) NOT NULL,
-  `material_title` varchar(255) NOT NULL,
-  `material_description` text NOT NULL,
+  `material_user_id` int(10) NOT NULL,
+  `material_an_id` int(10) DEFAULT NULL,
+  `material_asgn_id` int(10) DEFAULT NULL,
   `material_file` varchar(255) NOT NULL,
   `material_uploaded_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `materials`
+-- Table structure for table `submissions`
 --
 
-INSERT INTO `materials` (`material_id`, `material_class_id`, `material_an_id`, `material_title`, `material_description`, `material_file`, `material_uploaded_at`) VALUES
-(45, 39, 63, '', '', '1718889996_2022-11-15.jpg', '2024-06-20 18:56:36'),
-(46, 39, 64, '', '', '1718890083_index.php', '2024-06-20 18:58:03'),
-(47, 39, 64, '', '', '1718890083_se1.pdf', '2024-06-20 18:58:03');
+CREATE TABLE `submissions` (
+  `sub_id` int(10) NOT NULL,
+  `sub_class_id` int(10) NOT NULL,
+  `sub_asgn_id` int(10) NOT NULL,
+  `sub_student_id` int(10) NOT NULL,
+  `sub_file` text NOT NULL,
+  `sub_date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -158,12 +175,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `user_created_at`, `user_updated_at`, `user_image_url`, `user_token`) VALUES
-(3, '1052 Niladri Basak', 'nilaronaldo007@gmail.com', '', '2024-06-16 02:59:34', NULL, 'https://lh3.googleusercontent.com/a/ACg8ocKbi-FQonx-bxnZ-LFDo6Ms-1Raafc8REl8Ev8K-UxLcHCCrnFP=s96-c', '117905127042921495538'),
-(11, 'Temp ', 'temp6t9@gmail.com', '', '2024-06-19 17:13:06', NULL, 'https://lh3.googleusercontent.com/a/ACg8ocK3KlNXuPi5A7u1k0G4V1vu4yrfZGs8_Arj4bEI0yKsWFPd8Q=s96-c', '107248010894719249390'),
-(12, 'test1', 'test1@test.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-06-19 17:24:06', NULL, NULL, ''),
-(13, 'test2', 'test2@gmail.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-06-20 11:26:55', NULL, NULL, ''),
-(14, 'test3', 'test3@test.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-06-20 11:33:41', NULL, NULL, ''),
-(15, 'test4', 'test4@test.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-06-20 11:36:31', NULL, NULL, '');
+(1, '1052 Niladri Basak', 'nilaronaldo007@gmail.com', '', '2024-06-16 02:59:34', NULL, 'https://lh3.googleusercontent.com/a/ACg8ocKbi-FQonx-bxnZ-LFDo6Ms-1Raafc8REl8Ev8K-UxLcHCCrnFP=s96-c', '117905127042921495538'),
+(2, 'test1', 'test1@test.com', '$2y$10$69hellomotherfucker69uctR5y9PDolnAn0qmkLYfFRfHhZgnSEa', '2024-07-12 11:47:59', NULL, NULL, '');
 
 --
 -- Indexes for dumped tables
@@ -194,10 +207,22 @@ ALTER TABLE `enrollments`
   ADD PRIMARY KEY (`enrollment_id`);
 
 --
+-- Indexes for table `grades`
+--
+ALTER TABLE `grades`
+  ADD PRIMARY KEY (`grade_id`);
+
+--
 -- Indexes for table `materials`
 --
 ALTER TABLE `materials`
   ADD PRIMARY KEY (`material_id`);
+
+--
+-- Indexes for table `submissions`
+--
+ALTER TABLE `submissions`
+  ADD PRIMARY KEY (`sub_id`);
 
 --
 -- Indexes for table `users`
@@ -213,13 +238,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `an_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `an_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `asgn_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `asgn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `classes`
@@ -231,19 +256,31 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT for table `enrollments`
 --
 ALTER TABLE `enrollments`
-  MODIFY `enrollment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `enrollment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `grades`
+--
+ALTER TABLE `grades`
+  MODIFY `grade_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `material_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `material_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+
+--
+-- AUTO_INCREMENT for table `submissions`
+--
+ALTER TABLE `submissions`
+  MODIFY `sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

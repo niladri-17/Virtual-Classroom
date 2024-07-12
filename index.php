@@ -25,36 +25,39 @@ if (isset($_SESSION['user_id']))
             </div>
             <div class="header-right">
                 <i id="themeToggle" class="fas fa-moon icon" title="Toggle Theme"></i>
-                <i style="display: none;" id="signinBtn" class="fas fa-arrow-right-to-bracket icon" title="Sign In"></i>
+                <!-- <i style="display: none;" id="signinBtn1" class="fas fa-arrow-right-to-bracket icon"
+                    title="Sign In"></i> -->
             </div>
         </header>
         <div class="index-content">
             <div class="index-content-left">
                 <h2 class="index-left-heading">Where teaching and learning come together</h2>
-                <p>Virtual Classroom helps educators create engaging learning experiences they can personalize, manage, and measure. It empowers educators to enhance their impact and prepare students for the future.</p>
-                <div><a href="">Sign in to Classroom</a></div>
+                <p>Virtual Classroom helps educators create engaging learning experiences they can personalize, manage,
+                    and measure. It empowers educators to enhance their impact and prepare students for the future.</p>
+                <div>
+                    <a id="signinBtn1" href="#">Sign in to Classroom</a>
+                </div>
             </div>
             <div class="index-content-right">
-            <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Sign In</h2>
-            <form id="signin-form">
-                <div id="signup-success" style="color:green"></div>
-                <div id="signin-response" style="color:red"></div>
-                <label for="signinEmail">Email:</label>
-                <input type="email" id="signinEmail" required>
-                <label for="signinPassword">Password:</label>
-                <input type="password" id="signinPassword" required>
-                <button type="submit">Sign In</button>
-                <div><a href='<?= $client->createAuthUrl(); ?>'
-                        style="display:block;width:max-content;margin:0 auto;text-decoration:none;"><i
-                            class="fa-brands fa-google"></i>
-                        Sign in with Google</a>
-                </div>
-                <p class="forgot-password"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
-                <p class="toggle-modal">Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
-            </form>
-        </div>
+                <!-- <div style="margin: 0;" class="modal-content">
+                    <h2>Sign In</h2>
+                    <form id="signin-form">
+                        <div id="signup-success" style="color:green"></div>
+                        <div id="signin-response" style="color:red"></div>
+                        <label for="signinEmail">Email:</label>
+                        <input type="email" id="signinEmail" required>
+                        <label for="signinPassword">Password:</label>
+                        <input type="password" id="signinPassword" required>
+                        <button type="submit">Sign In</button>
+                        <div><a href=''
+                                style="display:block;width:max-content;margin:0 auto;text-decoration:none;"><i
+                                    class="fa-brands fa-google"></i>
+                                Sign in with Google</a>
+                        </div>
+                        <p class="forgot-password"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+                            <p class="toggle-modal">Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+                    </form>
+                </div> -->
             </div>
         </div>
     </div>
@@ -130,7 +133,7 @@ if (isset($_SESSION['user_id']))
         $("#signupPassword").val("");
         $("#ConfirmPassword").val("");
     }
-    
+
     function emptySigninEntry() {
         $("#signinEmail").val("");
         $("#signinPassword").val("");
@@ -142,7 +145,7 @@ if (isset($_SESSION['user_id']))
         const signinPassword = $("#signinPassword").val();
         $.ajax({
             type: "POST",
-            url: "controllers/auth.php",
+            url: "controllers/auth",
             data: {
                 signin: 1,
                 signinEmail: signinEmail,
@@ -171,7 +174,7 @@ if (isset($_SESSION['user_id']))
         const confirmPassword = $("#ConfirmPassword").val();
         $.ajax({
             type: "POST",
-            url: "controllers/auth.php",
+            url: "controllers/auth",
             data: {
                 signup: 1,
                 signupName: signupName,
@@ -186,9 +189,10 @@ if (isset($_SESSION['user_id']))
                     $("#signup-response").show();
                     $("#signup-response").text(message);
                 } else {
-                    // toggleModal(signupModal, signinModal);
-                    $(signupModal).hide();
+                    toggleModal(signupModal, signinModal);
                     emptySigninEntry();
+                    $("#signin-response").text("");
+                    $("#signin-response").hide();
                     $("#signup-success").show();
                     $("#signup-success").text(message);
                 }

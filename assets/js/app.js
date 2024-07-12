@@ -1,6 +1,6 @@
 // Select elements
 const themeToggle = document.getElementById("themeToggle");
-const signinBtn = document.getElementById("signinBtn");
+const signinBtn = document.getElementById("signinBtn1");
 const signinModal = document.getElementById("signinModal");
 const signupModal = document.getElementById("signupModal");
 const forgotPasswordModal = document.getElementById("forgotPasswordModal");
@@ -28,6 +28,11 @@ const classCodeModal = document.getElementById("#classCodeModal");
 const classQuill1 = document.getElementById("#classEditor1");
 const postQuill1 = document.getElementById("#editor1");
 const postQuill2 = document.getElementById("#editor2");
+
+const createClasswork = document.getElementById("create-classwork");
+const createClassworkDropdown = document.getElementById(
+  "create-classwork-dropdown"
+);
 
 if (teachingList) {
   teachingList.addEventListener("click", () => {
@@ -58,46 +63,46 @@ if (enrolledList) {
 }
 
 function enrolledClassDropdownClose() {
-  $("#enrolled-classes").css("height", "0px")
-  $("#enrolled-classes").removeClass("opened")
-  $("#enrolled-dropdown").removeClass("rotated")
+  $("#enrolled-classes").css("height", "0px");
+  $("#enrolled-classes").removeClass("opened");
+  $("#enrolled-dropdown").removeClass("rotated");
 }
 
 function fetchEnrolledClasses() {
   $.ajax({
-      type: "POST",
-      url: "controllers/alike.php",
-      data: {
-          enrolled_list: 1,
-      },
-      success: function (response) {
-          const res = jQuery.parseJSON(response)
-          if (res.status == 1) {
-              $("#enrolled-classes-list").html(res.message);
-          }
+    type: "POST",
+    url: "controllers/alike",
+    data: {
+      enrolled_list: 1,
+    },
+    success: function (response) {
+      const res = jQuery.parseJSON(response);
+      if (res.status == 1) {
+        $("#enrolled-classes-list").html(res.message);
       }
+    },
   });
 }
 
 function TeachingClassDropdownClose() {
-  $("#teaching-classes").css("height", "0px")
-  $("#teaching-classes").removeClass("opened")
-  $("#teaching-dropdown").removeClass("rotated")
+  $("#teaching-classes").css("height", "0px");
+  $("#teaching-classes").removeClass("opened");
+  $("#teaching-dropdown").removeClass("rotated");
 }
 
 function fetchTeachingClasses() {
   $.ajax({
-      type: "POST",
-      url: "controllers/alike.php",
-      data: {
-        teaching_list: 1,
-      },
-      success: function (response) {
-          const res = jQuery.parseJSON(response)
-          if (res.status == 1) {
-              $("#teaching-classes-list").html(res.message);
-          }
+    type: "POST",
+    url: "controllers/alike",
+    data: {
+      teaching_list: 1,
+    },
+    success: function (response) {
+      const res = jQuery.parseJSON(response);
+      if (res.status == 1) {
+        $("#teaching-classes-list").html(res.message);
       }
+    },
   });
 }
 
@@ -124,6 +129,9 @@ if (plusIcon) {
   plusIcon.addEventListener("click", toggleDropdown);
   createClass.addEventListener("click", () => openModal(createClassModal));
   joinClass.addEventListener("click", () => openModal(joinClassModal));
+}
+if (createClasswork) {
+  createClasswork.addEventListener("click", toggleClassworkDropdown);
 }
 window.addEventListener("click", outsideClick);
 
@@ -164,6 +172,10 @@ function toggleDropdown() {
   dropdownContent.classList.toggle("show");
 }
 
+function toggleClassworkDropdown() {
+  createClassworkDropdown.classList.toggle("show");
+}
+
 function toggleSidebar() {
   sidebar.classList.toggle("closed");
   if (sidebar.classList.contains("closed")) {
@@ -202,9 +214,15 @@ function outsideClick(e) {
     }
   }
 
-  if (dropdown) {
+  if (dropdownContent) {
     if (!dropdown.contains(e.target)) {
       dropdownContent.classList.remove("show");
+    }
+  }
+
+  if (createClasswork) {
+    if (!createClasswork.contains(e.target)) {
+      createClassworkDropdown.classList.remove("show");
     }
   }
 }
@@ -238,6 +256,8 @@ function logoutAction(callback) {
   );
 }
 
+// Logout
+
 logout.onclick = () => {
   logoutAction(function (status) {
     console.log(status); // This logs the user's response (true or false)
@@ -247,19 +267,65 @@ logout.onclick = () => {
   });
 };
 
-// if (postQuill1 || postQuill2) {
-// const quill2 = new Quill("#Editor1", {
-//   modules: {
-//     toolbar: [["bold", "italic", "underline"], [{ list: "bullet" }]],
-//   },
-//   placeholder: "Add a comment...",
-//   theme: "snow", // or 'bubble'
-// });
-// const quill3 = new Quill("#Editor2", {
-//   modules: {
-//     toolbar: [["bold", "italic", "underline"], [{ list: "bullet" }]],
-//   },
-//   placeholder: "Add a comment...",
-//   theme: "snow", // or 'bubble'
-// });
-// }
+function setupFileInput(fileInputId, fileListId, fileCountId) {
+  const fileInput = document.getElementById(fileInputId);
+  const fileList = document.getElementById(fileListId);
+  const fileCount = document.getElementById(fileCountId);
+  let selectedFiles = [];
+
+  fileInput?.addEventListener("change", function (event) {
+    handleFileSelect(event, fileList, fileCount);
+  });
+
+  function handleFileSelect(event, fileList, fileCount) {
+    const files = Array.from(event.target.files);
+    const newFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const fileExists = selectedFiles.some(
+        (f) => f.name === files[i].name && f.size === files[i].size
+      );
+      if (!fileExists) {
+        newFiles.push(files[i]);
+        selectedFiles.push(files[i]);
+      }
+    }
+
+    updateFileList(fileList, fileCount);
+    updateFileInput();
+  }
+
+  function updateFileList(fileList, fileCount) {
+    fileList.innerHTML = "";
+
+    selectedFiles.forEach((file, index) => {
+      const fileItem = document.createElement("li");
+      fileItem.className = "file-list-item";
+      fileItem.textContent = file.name;
+
+      const removeButton = document.createElement("span");
+      removeButton.className = "remove-file";
+      removeButton.textContent = "✖";
+      removeButton.addEventListener("click", function () {
+        removeFile(index, fileList, fileCount);
+      });
+
+      fileItem.appendChild(removeButton);
+      fileList.appendChild(fileItem);
+    });
+
+    fileCount.textContent = `${selectedFiles.length} files`;
+  }
+
+  function removeFile(index, fileList, fileCount) {
+    selectedFiles.splice(index, 1);
+    updateFileList(fileList, fileCount);
+    updateFileInput();
+  }
+
+  function updateFileInput() {
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach((file) => dataTransfer.items.add(file));
+    fileInput.files = dataTransfer.files;
+  }
+}
